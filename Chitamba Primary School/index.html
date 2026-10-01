@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chitamba Primary School</title>
+    <style>
+        :root {
+            --navy-blue: #0a1f3d;
+            --navy-deep: #071a2d;
+            --yellow: #f5c451;
+            --gold-soft: #f7d77d;
+            --light-brown: #d9b07a;
+            --soft-bg: #f5f7fb;
+            --panel: #ffffff;
+            --text-dark: #1c2430;
+            --text-muted: #5c6775;
+            --border: rgba(10, 31, 61, 0.12);
+            --shadow: 0 18px 40px rgba(10, 31, 61, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: linear-gradient(180deg, #f8fafc 0%, #eef3f9 100%);
+            color: var(--text-dark);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--navy-deep) 0%, var(--navy-blue) 100%);
+            color: var(--panel);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 22px rgba(7, 26, 45, 0.18);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-badge {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--yellow), var(--gold-soft));
+            color: var(--navy-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 1.5rem;
+            box-shadow: 0 0 0 4px rgba(245, 196, 81, 0.16);
+        }
+
+        .logo-text h1 {
+            font-size: 1.15rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--panel);
+        }
+
+        .logo-text p {
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold-soft);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 0.45rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--panel);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            padding: 0.7rem 1rem;
+            border-radius: 999px;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        nav a:hover,
+        nav a.active {
+            background: var(--yellow);
+            color: var(--navy-blue);
+        }
+
+        .page-content {
+            display: none;
+            flex: 1;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        #home {
+            background:
+                linear-gradient(rgba(7, 18, 29, 0.42), rgba(7, 18, 29, 0.56)),
+                url('images/bg.jpg') center/cover no-repeat fixed;
+            color: var(--panel);
+            min-height: calc(100vh - 82px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #home::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(245, 196, 81, 0.10), transparent 36%, rgba(21, 128, 61, 0.12));
+            pointer-events: none;
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 82px 20px 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            min-height: calc(100vh - 120px);
+        }
+
+        .hero > div {
+            width: min(100%, 1100px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background: rgba(12, 18, 15, 0.38);
+            border: 1px solid rgba(245, 196, 81, 0.85);
+            color: #fef3c7;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            font-weight: 800;
+            margin-bottom: 1.1rem;
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeUp 0.75s ease forwards 0.15s;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+        }
+
+        .welcome-line {
+            font-size: clamp(1.6rem, 2.4vw, 2.6rem);
+            letter-spacing: 0.04em;
+            text-transform: none;
+            color: #fff7f7;
+            margin-bottom: 0.2rem;
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeUp 0.8s ease forwards 0.2s;
+            font-weight: 700;
+            text-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 5vw, 5.4rem);
+            line-height: 0.96;
+            letter-spacing: -0.05em;
+            margin-bottom: 0.8rem;
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeUp 0.8s ease forwards 0.25s;
+            text-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+            font-weight: 900;
+            max-width: 1100px;
+        }
+
+        .hero h1 .accent {
+            display: inline-block;
+            background: linear-gradient(120deg, #ffffff 0%, #f9d2d2 18%, #ee5d5d 42%, #fef1f1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.10));
+        }
+
+        .hero-subtitle {
+            font-size: clamp(0.76rem, 1.05vw, 0.92rem);
+            max-width: 820px;
+            color: rgba(255, 255, 255, 0.96);
+            margin-bottom: 1.8rem;
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeUp 0.8s ease forwards 0.35s;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            font-weight: 800;
+            background: rgba(10, 31, 61, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.7rem 1.3rem;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .primary-btn,
+        .secondary-btn,
+        .btn-submit {
+            border: none;
+            border-radius: 999px;
+            padding: 0.9rem 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .primary-btn,
+        .btn-submit {
+            background: linear-gradient(135deg, var(--yellow), var(--gold-soft));
+            color: var(--navy-blue);
+            box-shadow: 0 12px 24px rgba(245, 196, 81, 0.25);
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: var(--panel);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .primary-btn:hover,
+        .secondary-btn:hover,
+        .btn-submit:hover {
+            transform: translateY(-2px);
+        }
+
+        .hero-panel {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(217, 176, 122, 0.38);
+            border-radius: 24px;
+            backdrop-filter: blur(8px);
+            padding: 1.5rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+        }
+
+        .panel-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 1.2rem 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .panel-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .panel-card h3 {
+            color: var(--gold-soft);
+            font-size: 1rem;
+            margin-bottom: 0.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .panel-card p {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 0.95rem;
+        }
+
+        .stats {
+            max-width: 1180px;
+            margin: -20px auto 0;
+            padding: 0 20px 30px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .mission-board {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .mission-stack {
+            width: min(100%, 980px);
+            margin: 0 auto;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .mission-card {
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 20px;
+            padding: 1.5rem 1.4rem;
+            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(8px);
+        }
+
+        .mission-card h3 {
+            color: var(--yellow);
+            margin-bottom: 0.6rem;
+            font-size: 1rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .mission-card p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: clamp(1rem, 1.6vw, 1.15rem);
+            line-height: 1.5;
+        }
+
+        .stat-box {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem 1.2rem;
+            text-align: center;
+        }
+
+        .stat-box strong {
+            display: block;
+            color: var(--navy-blue);
+            font-size: 2rem;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-box span {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .highlights {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.2rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 3vw, 2.8rem);
+            color: #f9b7b7;
+            margin-bottom: 0.7rem;
+            font-weight: 800;
+        }
+
+        .section-header p {
+            color: #f8d7d7;
+            max-width: 760px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .divider {
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--yellow), var(--light-brown));
+            margin: 0 auto 1.5rem;
+            border-radius: 999px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.8rem 1.4rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: rgba(245, 196, 81, 0.15);
+            color: var(--navy-blue);
+            display: grid;
+            place-items: center;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--navy-blue);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.96rem;
+        }
+
+        .section-container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section-heading {
+            text-align: center;
+            font-size: clamp(2rem, 3vw, 2.8rem);
+            color: var(--navy-blue);
+            margin-bottom: 0.7rem;
+        }
+
+        .heading-line {
+            width: 110px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--yellow), var(--light-brown));
+            border-radius: 999px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.6rem;
+        }
+
+        .about-box {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--light-brown);
+            border-radius: 18px;
+            padding: 1.8rem 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .about-box h3 {
+            color: var(--navy-blue);
+            margin-bottom: 0.6rem;
+            font-size: 1.3rem;
+        }
+
+        .about-box p {
+            color: var(--text-muted);
+        }
+
+        .story-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 1.6rem;
+            margin-top: 2rem;
+        }
+
+        .story-panel,
+        .value-panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 1.8rem;
+        }
+
+        .story-panel h3,
+        .value-panel h3 {
+            color: var(--navy-blue);
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .story-panel p,
+        .value-panel li {
+            color: var(--text-muted);
+        }
+
+        .value-panel ul {
+            list-style: none;
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .value-panel li {
+            position: relative;
+            padding-left: 1.6rem;
+        }
+
+        .value-panel li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--navy-blue);
+            font-weight: 900;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 1rem;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--navy-blue);
+            border-radius: 18px;
+            padding: 1.3rem 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .info-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(10, 31, 61, 0.08);
+            color: var(--navy-blue);
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .info-item strong {
+            color: var(--navy-blue);
+            display: block;
+            margin-bottom: 0.3rem;
+            font-size: 1.05rem;
+        }
+
+        .info-item p {
+            color: var(--text-muted);
+        }
+
+        .info-item a {
+            color: var(--navy-blue);
+            text-decoration: underline;
+            text-underline-offset: 0.15em;
+        }
+
+        .contact-form {
+            background: var(--panel);
+            padding: 2rem;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.45rem;
+            font-weight: 700;
+            color: var(--navy-blue);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid #d6dfe9;
+            border-radius: 12px;
+            background: #f9fafc;
+            color: var(--text-dark);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: rgba(10, 31, 61, 0.7);
+            box-shadow: 0 0 0 4px rgba(10, 31, 61, 0.08);
+            background: #fff;
+        }
+
+        .btn-submit {
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .contact-note {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+            text-align: center;
+        }
+
+        footer {
+            background: linear-gradient(90deg, var(--navy-deep) 0%, var(--navy-blue) 100%);
+            color: var(--panel);
+            text-align: center;
+            padding: 1.3rem 1rem;
+            border-top: 4px solid var(--light-brown);
+            margin-top: auto;
+        }
+
+        @media (max-width: 900px) {
+            .hero,
+            .story-layout,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 0.8rem;
+                padding: 1rem 1.2rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding-top: 60px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .primary-btn,
+            .secondary-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo-badge">C</div>
+            <div class="logo-text">
+                <h1>Chitamba Primary</h1>
+                <p>Ministry of Education</p>
+            </div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#home" id="nav-home" class="active" aria-current="page">Home</a></li>
+                <li><a href="#about" id="nav-about">About Us</a></li>
+                <li><a href="#contact" id="nav-contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="home" class="page-content active">
+        <section class="hero">
+            <div>
+                <div class="eyebrow">Excellence in Learning</div>
+                <p class="welcome-line">Welcome to</p>
+                <h1><span class="accent">Chitamba Primary School</span></h1>
+                <p class="hero-subtitle">MINISTRY OF EDUCATION</p>
+
+                <div class="hero-actions">
+                    <button class="primary-btn" onclick="showPage('about')">Discover More</button>
+                    <button class="secondary-btn" onclick="showPage('contact')">Contact Us</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-box">
+                <strong>99.9%</strong>
+                <span>Performance Goal</span>
+            </div>
+            <div class="stat-box">
+                <strong>2026 - 2027 </strong>
+                <span>Vision Target</span>
+            </div>
+            <div class="stat-box">
+                <strong>24/7</strong>
+                <span>Student Growth Focus</span>
+            </div>
+        </section>
+
+        <section class="mission-board">
+            <div class="mission-stack">
+                <div class="mission-card">
+                    <h3>Vision</h3>
+                    <p>Achieve 99.9% learner performance at all levels by 2026 - 2027.</p>
+                </div>
+
+                <div class="mission-card">
+                    <h3>Mission</h3>
+                    <p>To provide quality education that empowers learners in a dynamic world and enhances sustainable national development.</p>
+                </div>
+
+                <div class="mission-card">
+                    <h3>Motto</h3>
+                    <p>Education for Empowerment</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="highlights">
+            <div class="section-header">
+                <h2>Why Families Choose Us</h2>
+                <div class="divider"></div>
+                <p>We create a positive, supportive learning environment where learners are encouraged to thrive academically, socially, and personally.</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">A</div>
+                    <h3>Academic Excellence</h3>
+                    <p>Strong teaching standards and a well-rounded curriculum that develop critical thinking and confidence.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">C</div>
+                    <h3>Character Building</h3>
+                    <p>Values-based education that prepares learners to lead with integrity, respect, and responsibility.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">S</div>
+                    <h3>Safe Environment</h3>
+                    <p>A welcoming school culture where every learner is supported, protected, and encouraged to succeed.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">E</div>
+                    <h3>Empowered Learning</h3>
+                    <p>Practical, engaging experiences that help young people build the skills to shape their future.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <main id="about" class="page-content">
+        <div class="section-container">
+            <h2 class="section-heading">About Our School</h2>
+            <div class="heading-line"></div>
+
+            <div class="about-content">
+                <div class="about-box">
+                    <h3>Academic Excellence</h3>
+                    <p>Chitamba Primary School is dedicated to nurturing young minds through a well-rounded curriculum designed to foster critical thinking, creativity, and lifelong learning under the Ministry of Education.</p>
+                </div>
+
+                <div class="about-box">
+                    <h3>Child Empowerment</h3>
+                    <p>We focus on dynamic educational strategies that build character, leadership, and practical skills, preparing our students to succeed and contribute meaningfully to society.</p>
+                </div>
+
+                <div class="about-box">
+                    <h3>Safe & Supportive Environment</h3>
+                    <p>Our experienced teaching staff and welcoming campus ensure that every learner receives personalized attention and equal opportunity to excel academically and socially.</p>
+                </div>
+            </div>
+
+            <div class="story-layout">
+                <div class="story-panel">
+                    <h3>Our Commitment</h3>
+                    <p>At Chitamba Primary School, we believe that every learner deserves access to meaningful education and a strong foundation for future success. Our school promotes a culture of excellence, inclusion, and continuous growth for both learners and staff.</p>
+                </div>
+
+                <div class="value-panel">
+                    <h3>Core Values</h3>
+                    <ul>
+                        <li>Academic growth and opportunity</li>
+                        <li>Respect, discipline, and integrity</li>
+                        <li>Inclusive learning for all</li>
+                        <li>Community partnership and support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="contact" class="page-content">
+        <div class="section-container">
+            <h2 class="section-heading">Get In Touch</h2>
+            <div class="heading-line"></div>
+
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <div class="info-icon">A</div>
+                        <div>
+                            <strong>School Address</strong>
+                            <p>Chitamba Primary School<br>Ministry of Education, Zambia</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">E</div>
+                        <div>
+                            <strong>Email & Phone</strong>
+                            <p>Email: <a href="mailto:info@chitambaprimary.edu">info@chitambaprimary.edu</a><br>Phone: <a href="tel:+260970000000">+260 970 000 000</a></p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">H</div>
+                        <div>
+                            <strong>School Hours</strong>
+                            <p>Monday - Friday: 07:30 AM - 16:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <form onsubmit="sendContactMessage(event)">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="Enter your email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" rows="5" placeholder="How can we help you?" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit">Open Email App</button>
+                        <p class="contact-note">Your email app will open with a draft. Review and send it there.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Chitamba Primary School — Ministry of Education. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function showPage(pageId, updateHistory = true) {
+            const page = document.getElementById(pageId);
+            const navLink = document.getElementById('nav-' + pageId);
+
+            if (!page || !navLink) {
+                return;
+            }
+
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => page.classList.remove('active'));
+
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                link.removeAttribute('aria-current');
+            });
+
+            page.classList.add('active');
+            navLink.classList.add('active');
+            navLink.setAttribute('aria-current', 'page');
+
+            if (updateHistory && window.location.hash !== '#' + pageId) {
+                window.history.pushState(null, '', '#' + pageId);
+            }
+
+            window.scrollTo(0, 0);
+        }
+
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                showPage(link.hash.slice(1));
+            });
+        });
+
+        window.addEventListener('popstate', () => {
+            showPage(window.location.hash.slice(1) || 'home', false);
+        });
+
+        function sendContactMessage(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+            const subject = 'Website enquiry from ' + name;
+            const body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + message;
+
+            window.location.href = 'mailto:info@chitambaprimary.edu?subject=' +
+                encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        }
+
+        showPage(window.location.hash.slice(1) || 'home', false);
+    </script>
+</body>
+</html>
